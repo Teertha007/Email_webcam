@@ -1,10 +1,11 @@
-import smtplib
 import mimetypes
+import smtplib
 from email.message import EmailMessage
 
 password = "bjfn pshp choo bbcp"
 sender = "teertha.sarker.4@gmail.com"
 receiver = "teertha.sarker.3@gmail.com"
+
 
 def send_mail(image_path):
     email_message = EmailMessage()
@@ -36,6 +37,7 @@ def send_mail(image_path):
         print("Recipient address was refused:", e)
     except Exception as e:
         print("An error occurred:", e)
+
 
 if __name__ == "__main__":
     send_mail("images/20.jpg")

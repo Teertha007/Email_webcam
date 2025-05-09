@@ -1,9 +1,10 @@
 import glob
-import time
-from emailing import send_mail
-import cv2
-import glob
 import os
+import time
+
+import cv2
+
+from emailing import send_mail
 
 video = cv2.VideoCapture(0)
 time.sleep(1)
@@ -12,25 +13,24 @@ first_frame = None
 status_list = []
 count = 1
 
+
 def clean_foler():
     images = glob.glob("images/*.jpg")
     for image in images:
         os.remove(image)
 
 
-while True: 
+while True:
     status = 0
     check, frame = video.read()
 
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     gray_frame_gau = cv2.GaussianBlur(gray_frame, (21, 21), 0)
 
-
     if first_frame is None:
         first_frame = gray_frame_gau
 
     delta_frame = cv2.absdiff(first_frame, gray_frame_gau)
-
 
     thresh_frame = cv2.threshold(delta_frame, 65, 255, cv2.THRESH_BINARY)[1]
     dil_frame = cv2.dilate(thresh_frame, None, iterations=2)
@@ -57,7 +57,6 @@ while True:
     if status_list[0] == 1 and status_list[1] == 0:
         send_mail(image_with_object)
         clean_foler()
-
 
     print(status_list)
 
