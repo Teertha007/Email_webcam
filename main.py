@@ -1,8 +1,9 @@
 import glob
 import time
-from emailing import sent_mail
+from emailing import send_mail
 import cv2
 import glob
+import os
 
 video = cv2.VideoCapture(0)
 time.sleep(1)
@@ -10,6 +11,13 @@ time.sleep(1)
 first_frame = None
 status_list = []
 count = 1
+
+def clean_foler():
+    images = glob.glob("images/*.jpg")
+    for image in images:
+        os.remove(image)
+
+
 while True: 
     status = 0
     check, frame = video.read()
@@ -31,7 +39,7 @@ while True:
     contours, check = cv2.findContours(dil_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     for contour in contours:
-        if cv2.contourArea(contour) < 10000:
+        if cv2.contourArea(contour) < 5000:
             continue
         (x, y, w, h) = cv2.boundingRect(contour)
         rectangle = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
@@ -46,8 +54,9 @@ while True:
     status_list.append(status)
     status_list = status_list[-2:]
 
-   # if status_list[0] == 1 and status_list[1] == 0:
-        #sent_mail(image_with_object)
+    if status_list[0] == 1 and status_list[1] == 0:
+        send_mail(image_with_object)
+        clean_foler()
 
 
     print(status_list)
