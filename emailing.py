@@ -8,6 +8,7 @@ receiver = "teertha.sarker.3@gmail.com"
 
 
 def send_mail(image_path):
+    print("Sending email...")
     email_message = EmailMessage()
     email_message['Subject'] = "Intruder Alert"
     email_message['From'] = sender
@@ -37,6 +38,7 @@ def send_mail(image_path):
         print("Recipient address was refused:", e)
     except Exception as e:
         print("An error occurred:", e)
+
 
 
 if __name__ == "__main__":
